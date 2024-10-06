@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,13 +14,23 @@ func main() {
 	server := gin.Default()
 
 	server.GET("/events", GetEvents)
-	server.POST("events", CreateEvent)
+	server.POST("/events", CreateEvent)
 
 	server.Run(":8080")
 }
 
 func GetEvents(context *gin.Context) {
-	events := models.GetAllEvents()
+	events, err := models.GetAllEvents()
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Internal server error"})
+		return
+	}
+
+	if len(events) == 0 {
+		events = []models.Event{}
+	}
+
 	context.JSON(http.StatusOK, events)
 }
 
@@ -33,8 +44,14 @@ func CreateEvent(context *gin.Context) {
 		return
 	}
 
-	event.ID = 1
 	event.UserID = 1
-	event.Save()
+	err = event.Save()
+
+	if err != nil {
+		fmt.Println(err)
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Internal server error"})
+		return
+	}
+
 	context.JSON(http.StatusCreated, event)
 }
