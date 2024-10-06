@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"shestapalau.by/rest/db"
@@ -14,6 +14,7 @@ func main() {
 	server := gin.Default()
 
 	server.GET("/events", GetEvents)
+	server.GET("/events/:id", GetEvent)
 	server.POST("/events", CreateEvent)
 
 	server.Run(":8080")
@@ -34,6 +35,24 @@ func GetEvents(context *gin.Context) {
 	context.JSON(http.StatusOK, events)
 }
 
+func GetEvent(context *gin.Context) {
+	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Bad request"})
+		return
+	}
+
+	event, err := models.GetEventById(id)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Internal server error"})
+		return
+	}
+
+	context.JSON(http.StatusOK, event)
+}
+
 func CreateEvent(context *gin.Context) {
 	var event models.Event
 
@@ -48,7 +67,6 @@ func CreateEvent(context *gin.Context) {
 	err = event.Save()
 
 	if err != nil {
-		fmt.Println(err)
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Internal server error"})
 		return
 	}
