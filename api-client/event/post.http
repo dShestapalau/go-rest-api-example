@@ -1,0 +1,9 @@
+POST http://localhost:8080/events
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImR6aWFuaXMuc2hlc3RhcGFsYXVAZ21haWwuY29tIiwiZXhwIjoxNzI4MjUwMzUwLCJ1c2VySWQiOjF9.owjK_YU2DCfXO788pC935Y4dLwMCel7eRxjuf6h_wvU
+
+{
+    "Name": "12",
+    "Description": "123",
+    "Location": "321",
+    "DateTime": "2024-10-10T01:03:03Z"
+}

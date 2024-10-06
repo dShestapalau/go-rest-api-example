@@ -1,8 +1,0 @@
-POST http://localhost:8080/events
-
-{
-    "Name": "12",
-    "Description": "123",
-    "Location": "321",
-    "DateTime": "2024-10-10T01:03:03Z"
-}
