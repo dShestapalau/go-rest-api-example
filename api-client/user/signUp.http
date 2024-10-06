@@ -1,0 +1,6 @@
+POST http://localhost:8080/signUp
+
+{
+    "email": "dzianis.shestapalau@gmail.com",
+    "password": "12345"
+}
